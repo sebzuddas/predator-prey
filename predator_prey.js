@@ -7,7 +7,8 @@ var presets = [
         num: {
             food: 30,
             pred: 10,
-            prey: 20
+            prey: 20,
+            human: 5
         },
         custom: []
     },

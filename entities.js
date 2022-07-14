@@ -285,3 +285,40 @@ templates.swarmer = {
         if (this.onEat(e, newEntities)) e.onEaten(this, newEntities);
     }
 };
+
+templates.human = {
+  
+  // predator
+    accAmt: 0.4,
+    avoidPriority: 0.5,
+    chasePriority: 4,
+    color: [207, 0, 255],
+    name: 'Human',
+    nutrition: 500,
+    perception: 200,
+    radius: 15,
+    steer: multiTarget,
+    toAvoid: ['swarm'],
+    toChase: ['food','prey', 'pred', 'swarmer'], // humans like honey, they can eat predators as well. 
+    toEat: ['food','prey','pred', 'swarmer'],
+    topSpeed: 3.5, // not as fast as most predators, but faster than some prey. 
+    onDeath: function(newEntities) {
+        if (random(3) >= 2) return;
+        var x = this.pos.x;
+        var y = this.pos.y;
+        newEntities.push(createEntity(x, y, templates.food));
+    },
+    onEatAttempt: function(e, newEntities) {
+        this.vel.mult(0);
+        if (random(5) >= 1) return;
+        if (this.onEat(e, newEntities)) e.onEaten(this, newEntities);
+    },
+    onEat: function(e, newEntities) { // could add an aspect of 'mating' ie maybe could have a requirement of a human being close to mate. 
+        if (this.eat(e)) {
+            if (random(5) >= 1) return false;
+            var x = this.pos.x + random(-20, 20);
+            var y = this.pos.y + random(-20, 20);
+            newEntities.push(createEntity(x, y, templates.human));
+        }
+    }
+}
