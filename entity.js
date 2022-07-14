@@ -1,3 +1,4 @@
+// class for one entity. 
 class Entity {
     constructor(x, y) {
         // Physics

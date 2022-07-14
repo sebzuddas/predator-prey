@@ -67,9 +67,9 @@ var avoidLines = false;
 var chaseLines = false;
 var lineMode = false;
 var motionBlur = false;
-var showChart = true;
-var showNutrition = true;
-var showPerception = true;
+var showChart = false;
+var showNutrition = false;
+var showPerception = false;
 
 var menuVisible = true;
 var sidebarOpen = true;
@@ -98,13 +98,7 @@ function bounceOffEdges(e) {
     }
 }
 
-// Create entity at mouse position
-function drawEntity() {
-    if (sidebarOpen && mouseX < 220) return;
-    if (menuVisible && mouseX < 220 && mouseY < 30) return;
-    entities.push(createEntity(mouseX, mouseY, templates[selected]));
-}
-
+// function for initiating entities on the whole based on the presets. 
 function initEntities() {
     entities = [];
     newEntities = [];
@@ -188,7 +182,6 @@ function toggleMenu() {
     }
 }
 
-
 // Main p5 functions
 
 function setup() {
@@ -263,112 +256,4 @@ function draw() {
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
     initEntities();
-}
-
-
-// User input
-
-function keyPressed() {
-    switch (keyCode) {
-        case 13:
-            // Enter
-            initEntities();
-            break;
-        case 17:
-            // Ctrl
-            showPerception = !showPerception;
-            break;
-        case 18:
-            // Alt
-            avoidLines = !avoidLines;
-            break;
-        case 32:
-            // Spacebar
-            chaseLines = !chaseLines;
-            break;
-        case 48:
-        case 49:
-        case 50:
-        case 51:
-        case 52:
-        case 53:
-        case 54:
-        case 55:
-        case 56:
-        case 57:
-            // 0-9
-            var n = keyCode - 48;
-            if (currentPreset !== n && presets.length > n) {
-                currentPreset = n;
-                initEntities();
-            }
-            break;
-        case 66:
-            // B
-            selected = 'prey';
-            break;
-        case 70:
-            // F
-            selected = 'food';
-            break;
-        case 71:
-            // G
-            showChart = !showChart;
-            break;
-        case 72:
-            // H
-            selected = 'hive';
-            break;
-        case 77:
-            // M
-            lineMode = !lineMode;
-            if (lineMode) {
-                avoidLines = true;
-                chaseLines = true;
-            } else {
-                avoidLines = false;
-                chaseLines = false;
-            }
-            break;
-        case 78:
-            // N
-            showNutrition = !showNutrition;
-            break;
-        case 79:
-            // O
-            motionBlur = !motionBlur;
-            break;
-        case 80:
-            // P
-            selected = 'pred';
-            break;
-        case 81:
-            // Q
-            menuVisible = !menuVisible;
-            var b = document.getElementById('menu-button');
-            var m = document.getElementById('menu');
-            if (menuVisible) {
-                b.style.display = 'inline';
-            } else {
-                b.style.display = 'none';
-                m.style.display = 'none';
-            }
-            break;
-        case 83:
-            // S
-            selected = 'swarm';
-            break;
-        case 86:
-            // V
-            selected = 'fungus';
-            break;
-    }
-}
-
-function mousePressed() {
-    drawEntity();
-}
-
-function mouseDragged() {
-    drawEntity();
 }
