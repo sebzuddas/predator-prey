@@ -288,12 +288,12 @@ templates.swarmer = {
 
 templates.human = {
   
-  // predator
+  // human
     accAmt: 0.4,
     avoidPriority: 0.5,
     chasePriority: 4,
     color: [207, 0, 255],
-    name: 'Human',
+    name: 'human',
     nutrition: 500,
     perception: 200,
     radius: 15,
