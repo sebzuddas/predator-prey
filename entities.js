@@ -123,50 +123,6 @@ templates.food = {
     hunger: function() {}
 };
 
-templates.fungus = {
-    accAmt: 0,
-    color: [102, 51, 153],
-    name: 'fungus',
-    nutrition: 500,
-    perception: 10,
-    radius: 10,
-    toChase: ['prey'],
-    toEat: ['prey'],
-    topSpeed: 0,
-    onEat: function(e, newEntities) {
-        if (this.eat(e)) {
-            if (random(2) < 1) {
-                var x = this.pos.x + random(-20, 20);
-                var y = this.pos.y + random(-20, 20);
-                newEntities.push(createEntity(x, y, templates.food));
-            }
-            var x = this.pos.x + random(-100, 100);
-            var y = this.pos.y + random(-100, 100);
-            newEntities.push(createEntity(x, y, templates.fungus));
-        }
-    }
-}
-
-templates.hive = {
-    accAmt: 0,
-    color: [54, 215, 183],
-    name: 'hive',
-    nutrition: 500,
-    perception: 100,
-    radius: 30,
-    steer: nearestTarget,
-    toChase: ['fungus', 'pred', 'prey'],
-    topSpeed: 0,
-    onChase: function(e, newEntities) {
-        if (random(15) >= 1) return;
-        var x = this.pos.x + random(-20, 20);
-        var y = this.pos.y + random(-20, 20);
-        var s = createEntity(x, y, templates.swarm);
-        s.hive = this;
-        newEntities.push(s);
-    }
-};
-
 templates.pred = {
     accAmt: 0.4,
     avoidPriority: 0.5,
@@ -177,8 +133,8 @@ templates.pred = {
     perception: 150,
     radius: 12,
     steer: multiTarget,
-    toAvoid: ['pred', 'swarm'],
-    toChase: ['prey'],
+    toAvoid: ['pred', 'human'],
+    toChase: ['prey', 'human'],
     toEat: ['prey'],
     topSpeed: 4,
     onDeath: function(newEntities) {
@@ -205,6 +161,7 @@ templates.pred = {
 templates.prey = {
     accAmt: 0.5,
     chasePriority: 2,
+    avoidPriority: 1,
     color: [82, 179, 217],
     name: 'prey',
     nutrition: 400,
@@ -213,7 +170,7 @@ templates.prey = {
     steer: nearestTarget,
     toChase: ['food'],
     toEat: ['food'],
-    topSpeed: 3,
+    toAvoid: ['pred', 'human'],
     onEat: function(e, newEntities) {
         if (this.eat(e)) {
             var x = this.pos.x + random(-20, 20);
@@ -223,71 +180,7 @@ templates.prey = {
     }
 };
 
-templates.swarm = {
-    accAmt: 0.4,
-    chasePriority: 4,
-    color: [249, 191, 59],
-    name: 'swarm',
-    nutrition: 150,
-    perception: 75,
-    steer: nearestTarget,
-    toAvoid: ['swarm'],
-    toChase: ['fungus', 'pred', 'prey'],
-    toEat: ['fungus', 'pred', 'prey'],
-    topSpeed: 4,
-    onChase: function(e, newEntities) {
-        if (random(5) >= 1) return;
-        var x = this.pos.x + random(-20, 20);
-        var y = this.pos.y + random(-20, 20);
-        var s = createEntity(x, y, templates.swarmer);
-        newEntities.push(s);
-    },
-    onDeath: function(newEntities) {
-        if (random(3) >= 2) return;
-        newEntities.push(createEntity(this.pos.x, this.pos.y, templates.food));
-    },
-    onEatAttempt: function(e, newEntities) {
-        if (typeof this.hive !== 'undefined' && !this.hive.alive) {
-            this.hive = undefined;
-        }
-        this.vel.mult(0);
-        if (random(15) >= 1) return;
-        var success;
-        if (typeof this.hive === 'undefined') {
-            success = this.onEat(e, newEntities);
-        } else {
-            success = this.hive.onEat(e, newEntities);
-        }
-        if (!success) return;
-        e.onEaten(this, newEntities);
-        if (random(23) >= 1) return;
-        newEntities.push(createEntity(this.pos.x, this.pos.y, templates.hive));
-        if (typeof this.hive !== 'undefined') return;
-        newEntities.push(createEntity(
-            this.pos.x, this.pos.y, templates.swarm
-        ));
-    }
-};
-
-templates.swarmer = {
-    accAmt: 0.4,
-    color: [249, 191, 59],
-    name: 'swarmer',
-    nutrition: 25,
-    perception: 50,
-    steer: nearestTarget,
-    toChase: ['fungus', 'pred', 'prey'],
-    toEat: ['fungus', 'pred', 'prey'],
-    topSpeed: 4,
-    onEatAttempt: function(e, newEntities) {
-        this.vel.mult(0);
-        if (random(15) >= 1) return;
-        if (this.onEat(e, newEntities)) e.onEaten(this, newEntities);
-    }
-};
-
 templates.human = {
-  
   // human
     accAmt: 0.4,
     avoidPriority: 0.5,
@@ -298,9 +191,9 @@ templates.human = {
     perception: 200,
     radius: 15,
     steer: multiTarget,
-    toAvoid: ['swarm'],
-    toChase: ['food','prey', 'pred', 'swarmer'], // humans like honey, they can eat predators as well. 
-    toEat: ['food','prey','pred', 'swarmer'],
+    toAvoid: ['pred'],
+    toChase: ['food','prey', 'pred'], 
+    toEat: ['food','prey','pred'],
     topSpeed: 3.5, // not as fast as most predators, but faster than some prey. 
     onDeath: function(newEntities) {
         if (random(3) >= 2) return;

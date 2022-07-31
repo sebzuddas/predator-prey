@@ -16,61 +16,12 @@ var presets = [
             human: 5
         },
         custom: []
-    },
-    {
-        num: {
-            food: 30,
-            fungus: 4,
-            hive: 1,
-            pred: 10,
-            prey: 20
-        },
-        custom: []
-    },
-    {
-        num: {
-            food: 30,
-            prey: 20
-        },
-        custom: []
-    },
-    {
-        num: {
-            prey: 20
-        },
-        custom: [
-            {
-                name: 'fungus',
-                x: 0,
-                y: 0 
-            },
-            {
-                name: 'fungus',
-                x: 100,
-                y: 100
-            },
-            {
-                name: 'fungus',
-                x: 200,
-                y: 200
-            },
-            {
-                name: 'fungus',
-                x: 300,
-                y: 300
-            },
-            {
-                name: 'fungus',
-                x: 400,
-                y: 400
-            }
-        ]
     }
 ];
 var currentPreset = 0;
 
-var avoidLines = false;
-var chaseLines = false;
+var avoidLines = true;
+var chaseLines = true;
 var lineMode = false;
 var motionBlur = false;
 var showChart = false;
@@ -119,12 +70,6 @@ function initEntities() {
             var y = random(height);
             entities.push(createEntity(x, y, templates[template]));
         }
-    }
-
-    // Spawn custom entities
-    for (var i = 0; i < preset.custom.length; i++) {
-        var e = preset.custom[i];
-        entities.push(createEntity(e.x, e.y, templates[e.name]));
     }
 }
 
@@ -193,7 +138,7 @@ function toggleMenu() {
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
     initEntities();
-    saveCSVBtn = createButton("Save CSV");
+    saveCSVBtn = createButton("Save test");
     saveCSVBtn.position(width-50, height-50);
     saveCSVBtn.mousePressed(saveAsCSV);
     
@@ -205,8 +150,6 @@ function setup() {
 function draw() {
     // Make background slightly transparent for motion blur
     background(0);
-    
-    
     
     var total = entities.length; // total population
     
@@ -295,9 +238,8 @@ return millis()/1000;
 function saveAsCSV() {
   
   let simulationOutput = new p5.Table();
-  //simulationOutput.addColumn("Time/s");
+
   let newRow = simulationOutput.addRow();
-  var row = simulationOutput.insertRow();
   
   simulationOutput.addColumn("Total Population");
   simulationOutput.addColumn("Human Population");
@@ -305,21 +247,25 @@ function saveAsCSV() {
   simulationOutput.addColumn("Prey Population");
   simulationOutput.addColumn("Food Population");
 
-  for(var i = 0; i<totalDynamic.length; i++){
+  for(var i = 1; i<totalDynamic.length; i++){
     simulationOutput.addRow().setNum("Total Population", int(totalDynamic[i]));
-    i++;
   }
   
-  for(var j = 0; j<humanDynamic.length; j++){
-    simulationOutput.insertRow(j).setNum("Predator Population", int(predDynamic[j]));
+  for(let j = 1; j<predDynamic.length; j++){
+    simulationOutput.setNum(j,1, int(predDynamic[j]));
     j++;
   }
-    
-    
-
   
-  
-
-  
-  save(simulationOutput, month()+"/"+day()+"_T:"+hour()+":"+minute()+":"+second()+"_Simulation_Output_CSV.csv");
+  save(simulationOutput, month()+"/"+day()+"_T:"+hour()+":"+minute()+":"+second()+"_Simulation_Output.csv");
 }
+
+//function saveAstxt(){
+//  let textToSave = [];
+//  for(var i = 0; i<totalDynamic.length; i++){
+//    textToSave[i] =int(totalDynamic[i]);
+//  }
+//  for(var j = 0; j<totalDynamic.length; j++){
+//    textToSave[j] =int(totalDynamic[j]);
+//  }
+//  save(textToSave,  month()+"/"+day()+"_T:"+hour()+":"+minute()+":"+second()+"_Simulation_Output.txt");
+//}
