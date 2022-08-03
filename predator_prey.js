@@ -27,7 +27,6 @@ var motionBlur = false;
 var showChart = false;
 var showNutrition = false;
 var showPerception = false;
-
 var menuVisible = true;
 var sidebarOpen = true;
 
@@ -141,10 +140,6 @@ function setup() {
     saveCSVBtn = createButton("Save test");
     saveCSVBtn.position(width-50, height-50);
     saveCSVBtn.mousePressed(saveAsCSV);
-    
-    //
-    
-        
 }
 
 function draw() {
@@ -163,14 +158,14 @@ function draw() {
     preyDynamic = append(preyDynamic, totPrey);
     foodDynamic = append(predDynamic, totFood); 
     humanDynamic = append(preyDynamic, totHuman);
- 
-    // Restart if there are not too many entities or too few dynamic entities
-    var numDynamic = getByName(entities, [
-        'pred', 'prey', 'human', 
-    ]).length;
-    if (total <= 0 || total > 1200 || numDynamic === 0) initEntities(); // initEntities(); restarts the simulation. 
 
+    //// Restart if there are not too many entities or too few dynamic entities
+    //var numDynamic = getByName(entities, [
+    //    'pred', 'prey', 'human', 
+    //]).length;
+    //if (total <= 0 || total > 1200 || numDynamic === 0) initEntities(); // initEntities(); restarts the simulation. 
     // Randomly spawn food on map
+
     if (random(5) < 1) {
         var x = random(width);
         var y = random(height);
@@ -207,9 +202,6 @@ function draw() {
             if (e.contains(t.pos.x, t.pos.y)) e.onEatAttempt(t, newEntities);
         }
     }
-
-    // Draw pie chart
-    if (showChart) pieChart(entities);
     
     fill(255,255,255); // make text white 
     text('Total Simulation Time: '+int(simTime())+'\nPredators: '+int(totPred)+'\nPrey: '+int(totPrey)+'\nFood: '+int(totFood)+'\nHumans: '+int(totHuman), 10, 10);
@@ -219,6 +211,10 @@ function draw() {
     removeDead(entities);
     entities = entities.concat(newEntities);
     newEntities = [];
+    
+    if(simTime() === 10){
+      saveAsCSV();
+    }
     
 }
 
@@ -249,14 +245,14 @@ function saveAsCSV() {
 
   for(var i = 1; i<totalDynamic.length; i++){
     simulationOutput.addRow().setNum("Total Population", int(totalDynamic[i]));
+    simulationOutput.setNum(i,"Human Population", int(humanDynamic[i]));
+    simulationOutput.setNum(i,"Predator Population", int(predDynamic[i]));
+    simulationOutput.setNum(i,"Prey Population", int(preyDynamic[i]));
+    simulationOutput.setNum(i,"Food Population", int(foodDynamic[i]));
   }
-  
-  for(let j = 1; j<predDynamic.length; j++){
-    simulationOutput.setNum(j,1, int(predDynamic[j]));
-    j++;
-  }
-  
+ 
   save(simulationOutput, month()+"/"+day()+"_T:"+hour()+":"+minute()+":"+second()+"_Simulation_Output.csv");
+  noLoop()
 }
 
 //function saveAstxt(){

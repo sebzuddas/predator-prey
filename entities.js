@@ -26,7 +26,6 @@ function createEntity(x, y, template) {
     return e;
 }
 
-
 // Steering functions
 
 function nearestTarget(entities, newEntities) {
@@ -124,17 +123,17 @@ templates.food = {
 };
 
 templates.pred = {
-    accAmt: 0.4,
+    accAmt: 0.6,
     avoidPriority: 0.5,
     chasePriority: 4,
     color: [207, 0, 15],
     name: 'pred',
-    nutrition: 200,
+    nutrition: 250,
     perception: 150,
     radius: 12,
     steer: multiTarget,
-    toAvoid: ['pred', 'human'],
-    toChase: ['prey', 'human'],
+    toAvoid: ['pred'],
+    toChase: ['prey'],
     toEat: ['prey'],
     topSpeed: 4,
     onDeath: function(newEntities) {
@@ -159,8 +158,7 @@ templates.pred = {
 };
 
 templates.prey = {
-    accAmt: 0.5,
-    chasePriority: 2,
+    accAmt: 0.4,
     avoidPriority: 1,
     color: [82, 179, 217],
     name: 'prey',
@@ -187,13 +185,13 @@ templates.human = {
     chasePriority: 4,
     color: [207, 0, 255],
     name: 'human',
-    nutrition: 500,
-    perception: 200,
+    nutrition: 300,
+    perception: 150,
     radius: 15,
     steer: multiTarget,
     toAvoid: ['pred'],
-    toChase: ['food','prey', 'pred'], 
-    toEat: ['food','prey','pred'],
+    toChase: ['food','prey'], 
+    toEat: ['food','prey'],
     topSpeed: 3.5, // not as fast as most predators, but faster than some prey. 
     onDeath: function(newEntities) {
         if (random(3) >= 2) return;
