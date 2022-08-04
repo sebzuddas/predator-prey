@@ -1,3 +1,4 @@
+// Global vars
 var entities;
 var newEntities;
 var selected = 'prey';
@@ -6,6 +7,21 @@ var preyDynamic = [];
 var humanDynamic = [];
 var foodDynamic = [];
 var totalDynamic = [];
+// Settings
+var currentPreset = 0;
+var avoidLines = true;
+var chaseLines = true;
+var lineMode = false;
+var motionBlur = false;
+var showChart = false;
+var showNutrition = false;
+var showPerception = false;
+var menuVisible = true;
+var sidebarOpen = true;
+
+
+
+
 
 var presets = [
     {
@@ -18,17 +34,7 @@ var presets = [
         custom: []
     }
 ];
-var currentPreset = 0;
 
-var avoidLines = true;
-var chaseLines = true;
-var lineMode = false;
-var motionBlur = false;
-var showChart = false;
-var showNutrition = false;
-var showPerception = false;
-var menuVisible = true;
-var sidebarOpen = true;
 
 
 // Misc functions
@@ -140,6 +146,9 @@ function setup() {
     //saveCSVBtn = createButton("Save test");
     //saveCSVBtn.position(width-50, height-50);
     //saveCSVBtn.mousePressed(saveAsCSV);
+    var latinHypercube = loadTable('/Users/seb/MATLAB-Drive/SURE/LHS_Settings/LHS_Input.csv', 'csv', 'header');
+    
+    
 }
 
 function draw() {
