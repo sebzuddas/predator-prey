@@ -137,9 +137,9 @@ function toggleMenu() {
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
     initEntities();
-    saveCSVBtn = createButton("Save test");
-    saveCSVBtn.position(width-50, height-50);
-    saveCSVBtn.mousePressed(saveAsCSV);
+    //saveCSVBtn = createButton("Save test");
+    //saveCSVBtn.position(width-50, height-50);
+    //saveCSVBtn.mousePressed(saveAsCSV);
 }
 
 function draw() {
@@ -211,9 +211,11 @@ function draw() {
     removeDead(entities);
     entities = entities.concat(newEntities);
     newEntities = [];
+    simulationTime = int(simTime());
     
-    if(simTime() === 10){
+    if(simulationTime === 10){
       saveAsCSV();
+      noLoop();
     }
     
 }
@@ -243,7 +245,7 @@ function saveAsCSV() {
   simulationOutput.addColumn("Prey Population");
   simulationOutput.addColumn("Food Population");
 
-  for(var i = 1; i<totalDynamic.length; i++){
+  for(var i = 0; i<totalDynamic.length; i++){
     simulationOutput.addRow().setNum("Total Population", int(totalDynamic[i]));
     simulationOutput.setNum(i,"Human Population", int(humanDynamic[i]));
     simulationOutput.setNum(i,"Predator Population", int(predDynamic[i]));

@@ -26,6 +26,7 @@ function createEntity(x, y, template) {
     return e;
 }
 
+
 // Steering functions
 
 function nearestTarget(entities, newEntities) {
@@ -158,8 +159,9 @@ templates.pred = {
 };
 
 templates.prey = {
-    accAmt: 0.4,
-    avoidPriority: 1,
+    accAmt: 0.2,
+    chasePriority: 1,
+    avoidPriority: 0.5,
     color: [82, 179, 217],
     name: 'prey',
     nutrition: 400,
