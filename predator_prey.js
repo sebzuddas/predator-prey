@@ -22,6 +22,7 @@ var finalSimTime = 10; // 5 minutes or 300 seconds
 var maxIteration;
 var iteration = 0;
 let latinHypercube; 
+
 var foodPop = [];
 var preyPop = [];
 var predPop = [];
@@ -33,6 +34,12 @@ function preload(){
   
 }
 
+
+function preload(){
+  
+  latinHypercube = loadTable('LHS_Input.csv', 'csv');
+  
+}
 
 // function for initiating entities on the whole based on the presets. 
 
@@ -55,14 +62,32 @@ function setup() {
 }
 
 
+// function for initiating entities on the whole based on the presets. 
+
+
+function setup() {
+    fill(255,255,255);
+    createCanvas(window.innerWidth, window.innerHeight);
+    initEntities();
+    let maxIteration = latinHypercube.getRowCount();
+    
+    for(let d = 0; d<maxIteration; d++){
+      foodPop[d] = [latinHypercube.get(d,0)]
+      preyPop[d] = [latinHypercube.get(d,1)]
+      predPop[d] = [latinHypercube.get(d,2)]
+      humanPop[d] = [latinHypercube.get(d,3)]    
+    }
+    //noLoop();
+}
 
 var presets = [
     {
         num: {
             food: foodPop[0],
-            pred: preyPop[0],//int(latinHypercube.get(1,2)),
-            prey: predPop[0],//int(latinHypercube.get(1,3)),
-            human: humanPop[0]//int(latinHypercube.get(1,4))
+            pred: preyPop[0],
+            prey: predPop[0],
+            human: humanPop[0]
+
         }
     }
 ];
@@ -159,6 +184,17 @@ function removeDead(entities) {
 
 
 function draw() {
+
+      presets = [
+        {
+            num: {
+                food: foodPop[iteration],
+                pred: preyPop[iteration],
+                prey: predPop[iteration],
+                human: humanPop[iteration]
+            }
+        }
+    ];
   
     // Make background slightly transparent for motion blur
     background(0);
@@ -229,6 +265,9 @@ function draw() {
       initEntities();
     }
     
+
+    if(iteration > maxIteration) noLoop();
+
     
 }
 

@@ -125,7 +125,7 @@ templates.food = {
 
 templates.pred = {
     accAmt: 0.6,
-    avoidPriority: 0.5,
+    avoidPriority: 0.25,
     chasePriority: 4,
     color: [207, 0, 15],
     name: 'pred',
@@ -182,14 +182,14 @@ templates.prey = {
 
 templates.human = {
   // human
-    accAmt: 0.4,
-    avoidPriority: 0.5,
+    accAmt: 0.25,
+    avoidPriority: 0.75,
     chasePriority: 4,
     color: [207, 0, 255],
     name: 'human',
     nutrition: 300,
     perception: 150,
-    radius: 15,
+    radius: 13,
     steer: multiTarget,
     toAvoid: ['pred'],
     toChase: ['food','prey'], 
