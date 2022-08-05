@@ -30,8 +30,35 @@ var humanPop = [];
 
 function preload(){
   
+  latinHypercube = loadTable('test.csv', 'csv');
+  
+}
+
+
+function preload(){
+  
   latinHypercube = loadTable('LHS_Input.csv', 'csv');
   
+}
+
+// function for initiating entities on the whole based on the presets. 
+
+
+function setup() {
+    fill(255,255,255);
+    createCanvas(window.innerWidth, window.innerHeight);
+    initEntities();
+    
+    let maxIteration = latinHypercube.getRowCount();
+    //print(latinHypercube.get(1,1));
+    foodPop = [latinHypercube.get(1,0)]
+    preyPop = [latinHypercube.get(1,1)]
+    predPop = [latinHypercube.get(1,2)]
+    humanPop = [latinHypercube.get(1,3)]
+
+    print(foodPop[0]);
+    noLoop();
+    
 }
 
 
@@ -60,6 +87,7 @@ var presets = [
             pred: preyPop[0],
             prey: predPop[0],
             human: humanPop[0]
+
         }
     }
 ];
@@ -156,6 +184,7 @@ function removeDead(entities) {
 
 
 function draw() {
+
       presets = [
         {
             num: {
@@ -236,8 +265,9 @@ function draw() {
       initEntities();
     }
     
+
     if(iteration > maxIteration) noLoop();
-    
+
     
 }
 
