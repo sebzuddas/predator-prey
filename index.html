@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,11 +7,6 @@
 
   <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
   <script language="javascript" type="text/javascript" src="libraries/p5.min.js"></script>
-  <script language="javascript" type="text/javascript" src="csvImportTest.js"></script>
-  <script language="javascript" type="text/javascript" src="entities.js"></script>
-  <script language="javascript" type="text/javascript" src="entity.js"></script>
-  <script language="javascript" type="text/javascript" src="utils.js"></script>
-  <script language="javascript" type="text/javascript" src="predator_prey.js"></script>
   <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
 
   <!-- This line removes any default padding and style.
@@ -19,5 +15,33 @@
 </head>
 
 <body>
+  <h1>Project Page</h1>
+  <p>Welcome to the Predator-Prey Simulation Project. Click the button below to run the simulation.</p>
+  <button id="run-simulation">Run Simulation</button>
+  <div id="simulation-container"></div>
+
+  <script>
+    document.getElementById('run-simulation').addEventListener('click', function() {
+      const scripts = [
+        'csvImportTest.js',
+        'entities.js',
+        'entity.js',
+        'utils.js',
+        'predator_prey.js'
+      ];
+
+      scripts.forEach(function(src) {
+        const script = document.createElement('script');
+        script.src = src;
+        document.body.appendChild(script);
+      });
+
+      // Add a canvas container
+      const canvasContainer = document.createElement('div');
+      canvasContainer.id = 'canvas-container';
+      document.getElementById('simulation-container').appendChild(canvasContainer);
+    });
+  </script>
 </body>
 </html>
+
